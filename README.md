@@ -11,6 +11,9 @@
 
 > Credora is a trustless, on-chain credit scoring system using Soulbound Tokens (SBTs) to bridge DeFi lending protocols with verifiable on-chain reputation. Enable uncollateralized lending at scale with privacy-preserving, composable credit scores.
 
+<img width="1173" height="621" alt="image" src="https://github.com/user-attachments/assets/7c1ef59b-b945-406e-994b-d51f42575aec" />
+
+
 ---
 
 ## 📋 Table of Contents
@@ -576,14 +579,6 @@ Contributions are welcome! Please read our contributing guidelines first.
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📞 Contact
-
-- **Twitter**: [@CredoraProtocol](https://twitter.com/CredoraProtocol)
-- **Discord**: [Join our community](https://discord.gg/credora)
-- **Email**: hello@credora.io
 
 ---
 
