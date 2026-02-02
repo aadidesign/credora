@@ -1,0 +1,88 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ScoreSBT
+    network: arbitrum-sepolia
+    source:
+      address: "0x0000000000000000000000000000000000000000"
+      abi: ScoreSBT
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CreditScore
+        - ScoreUpdate
+        - User
+        - DailyStats
+      abis:
+        - name: ScoreSBT
+          file: ./abis/ScoreSBT.json
+      eventHandlers:
+        - event: ScoreMinted(indexed address,indexed uint256)
+          handler: handleScoreMinted
+        - event: ScoreUpdated(indexed uint256,uint256,uint256,uint256,indexed address)
+          handler: handleScoreUpdated
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mappings/score-sbt.ts
+
+  - kind: ethereum
+    name: PermissionManager
+    network: arbitrum-sepolia
+    source:
+      address: "0x0000000000000000000000000000000000000000"
+      abi: PermissionManager
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Permission
+        - PermissionUsage
+        - User
+        - ProtocolStats
+        - DailyStats
+      abis:
+        - name: PermissionManager
+          file: ./abis/PermissionManager.json
+      eventHandlers:
+        - event: AccessGranted(indexed address,indexed address,uint256,uint256,indexed bytes32)
+          handler: handleAccessGranted
+        - event: AccessRevoked(indexed address,indexed address,indexed bytes32)
+          handler: handleAccessRevoked
+        - event: AccessUsed(indexed address,indexed address,uint256)
+          handler: handleAccessUsed
+      file: ./src/mappings/permission-manager.ts
+
+  - kind: ethereum
+    name: ScoreOracle
+    network: arbitrum-sepolia
+    source:
+      address: "0x0000000000000000000000000000000000000000"
+      abi: ScoreOracle
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Oracle
+        - ScoreRequest
+      abis:
+        - name: ScoreOracle
+          file: ./abis/ScoreOracle.json
+      eventHandlers:
+        - event: ScoreUpdateRequested(indexed address,uint256)
+          handler: handleScoreUpdateRequested
+        - event: ScoreUpdated(indexed address,uint256,bytes32,indexed address,uint256)
+          handler: handleOracleScoreUpdated
+        - event: OracleAdded(indexed address)
+          handler: handleOracleAdded
+        - event: OracleRemoved(indexed address)
+          handler: handleOracleRemoved
+      file: ./src/mappings/score-oracle.ts

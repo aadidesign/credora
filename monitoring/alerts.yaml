@@ -1,0 +1,200 @@
+# Credora Monitoring Alerts Configuration
+# For use with Tenderly, OpenZeppelin Defender, or similar services
+
+alerts:
+  # Score Manipulation Detection
+  - name: "Rapid Score Increase"
+    description: "Detects unusually rapid score increases that may indicate manipulation"
+    condition:
+      type: "event_pattern"
+      contract: "ScoreSBT"
+      event: "ScoreUpdated"
+      filter: "newScore - oldScore > 200"
+      timeWindow: "24h"
+    severity: "high"
+    actions:
+      - type: "slack"
+        channel: "#credora-alerts"
+      - type: "email"
+        recipients: ["security@credora.io"]
+      - type: "pagerduty"
+        serviceKey: "${PAGERDUTY_KEY}"
+
+  - name: "Score Update Frequency Anomaly"
+    description: "User receiving more updates than normal"
+    condition:
+      type: "event_count"
+      contract: "ScoreSBT"
+      event: "ScoreUpdated"
+      threshold: 5
+      timeWindow: "24h"
+      groupBy: "tokenId"
+    severity: "medium"
+    actions:
+      - type: "slack"
+        channel: "#credora-alerts"
+
+  # Oracle Health Monitoring
+  - name: "Oracle Downtime"
+    description: "No score updates from any oracle"
+    condition:
+      type: "event_absence"
+      contract: "ScoreOracle"
+      event: "ScoreUpdated"
+      timeWindow: "48h"
+    severity: "critical"
+    actions:
+      - type: "pagerduty"
+        serviceKey: "${PAGERDUTY_KEY}"
+      - type: "slack"
+        channel: "#credora-critical"
+      - type: "webhook"
+        url: "${FALLBACK_ORACLE_TRIGGER}"
+
+  - name: "Single Oracle Failure"
+    description: "Specific oracle not submitting updates"
+    condition:
+      type: "event_absence"
+      contract: "ScoreOracle"
+      event: "ScoreUpdated"
+      filter: "oracle = ${ORACLE_ADDRESS}"
+      timeWindow: "24h"
+    severity: "medium"
+    actions:
+      - type: "slack"
+        channel: "#credora-alerts"
+
+  # Permission System Monitoring
+  - name: "Permission Abuse Detection"
+    description: "Protocol making excessive access requests"
+    condition:
+      type: "event_count"
+      contract: "PermissionManager"
+      event: "AccessUsed"
+      threshold: 100
+      timeWindow: "1h"
+      groupBy: "protocol"
+    severity: "high"
+    actions:
+      - type: "slack"
+        channel: "#credora-security"
+      - type: "email"
+        recipients: ["security@credora.io"]
+      - type: "webhook"
+        url: "${RATE_LIMIT_TRIGGER}"
+
+  - name: "Mass Permission Revocation"
+    description: "Many users revoking access from same protocol"
+    condition:
+      type: "event_count"
+      contract: "PermissionManager"
+      event: "AccessRevoked"
+      threshold: 50
+      timeWindow: "1h"
+      groupBy: "protocol"
+    severity: "medium"
+    actions:
+      - type: "slack"
+        channel: "#credora-alerts"
+
+  # Contract Security
+  - name: "Ownership Transfer"
+    description: "Ownership changed on any core contract"
+    condition:
+      type: "event"
+      contracts: ["ScoreSBT", "ScoreOracle", "PermissionManager"]
+      event: "OwnershipTransferred"
+    severity: "critical"
+    actions:
+      - type: "pagerduty"
+        serviceKey: "${PAGERDUTY_KEY}"
+      - type: "slack"
+        channel: "#credora-critical"
+
+  - name: "New Oracle Added"
+    description: "A new oracle was authorized"
+    condition:
+      type: "event"
+      contract: "ScoreOracle"
+      event: "OracleAdded"
+    severity: "medium"
+    actions:
+      - type: "slack"
+        channel: "#credora-alerts"
+
+  # Recovery System
+  - name: "Recovery Initiated"
+    description: "Token recovery process started"
+    condition:
+      type: "event"
+      contract: "ScoreSBT"
+      event: "RecoveryInitiated"
+    severity: "low"
+    actions:
+      - type: "slack"
+        channel: "#credora-notifications"
+
+  - name: "Recovery Completed"
+    description: "Token recovery was completed"
+    condition:
+      type: "event"
+      contract: "ScoreSBT"
+      event: "RecoveryCompleted"
+    severity: "medium"
+    actions:
+      - type: "slack"
+        channel: "#credora-alerts"
+
+  # Gas and Performance
+  - name: "High Gas Usage"
+    description: "Transaction with unusually high gas"
+    condition:
+      type: "transaction"
+      contracts: ["ScoreSBT", "ScoreOracle", "PermissionManager"]
+      filter: "gasUsed > 500000"
+    severity: "low"
+    actions:
+      - type: "slack"
+        channel: "#credora-devops"
+
+# Dashboard Configuration
+dashboards:
+  main:
+    name: "Credora Protocol Health"
+    widgets:
+      - type: "counter"
+        title: "Total SBTs Minted"
+        query: "count(ScoreMinted)"
+        
+      - type: "timeseries"
+        title: "Score Updates (24h)"
+        query: "count(ScoreUpdated) by hour"
+        timeWindow: "24h"
+        
+      - type: "gauge"
+        title: "Average Score"
+        query: "avg(ScoreUpdated.newScore)"
+        
+      - type: "pie"
+        title: "Permission Distribution"
+        query: "count(AccessGranted) by protocol"
+        
+      - type: "timeseries"
+        title: "Daily Active Users"
+        query: "count(distinct user) by day"
+        timeWindow: "30d"
+
+# Notification Channels
+channels:
+  slack:
+    webhook: "${SLACK_WEBHOOK_URL}"
+    
+  email:
+    smtp:
+      host: "${SMTP_HOST}"
+      port: 587
+      user: "${SMTP_USER}"
+      password: "${SMTP_PASSWORD}"
+      
+  pagerduty:
+    apiKey: "${PAGERDUTY_API_KEY}"

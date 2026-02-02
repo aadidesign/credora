@@ -1,0 +1,99 @@
+# Score entities
+type CreditScore @entity {
+  id: ID! # Token ID
+  owner: Bytes!
+  score: BigInt!
+  lastUpdated: BigInt!
+  dataVersion: BigInt!
+  scoreProof: Bytes!
+  updateCount: BigInt!
+  createdAt: BigInt!
+  createdTx: Bytes!
+}
+
+type ScoreUpdate @entity {
+  id: ID! # tx hash + log index
+  tokenId: BigInt!
+  owner: Bytes!
+  oldScore: BigInt!
+  newScore: BigInt!
+  dataVersion: BigInt!
+  updatedBy: Bytes!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# Permission entities
+type Permission @entity {
+  id: ID! # user + protocol
+  user: Bytes!
+  protocol: Bytes!
+  grantedAt: BigInt!
+  expiresAt: BigInt!
+  maxRequests: BigInt!
+  usedRequests: BigInt!
+  isActive: Boolean!
+  permissionHash: Bytes!
+  createdTx: Bytes!
+}
+
+type PermissionUsage @entity {
+  id: ID! # tx hash + log index
+  user: Bytes!
+  protocol: Bytes!
+  remainingRequests: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# Oracle entities
+type Oracle @entity {
+  id: ID! # oracle address
+  address: Bytes!
+  isActive: Boolean!
+  addedAt: BigInt!
+  updatesSubmitted: BigInt!
+}
+
+type ScoreRequest @entity {
+  id: ID! # request ID
+  user: Bytes!
+  requestedAt: BigInt!
+  status: String! # PENDING, FULFILLED, CANCELLED, EXPIRED
+  fulfilledAt: BigInt
+  requestTx: Bytes!
+}
+
+# Analytics entities
+type DailyStats @entity {
+  id: ID! # date string YYYY-MM-DD
+  date: BigInt!
+  mintCount: BigInt!
+  updateCount: BigInt!
+  permissionGrantCount: BigInt!
+  permissionRevokeCount: BigInt!
+  accessUsageCount: BigInt!
+}
+
+type ProtocolStats @entity {
+  id: ID! # protocol address
+  protocol: Bytes!
+  totalPermissionsReceived: BigInt!
+  activePermissions: BigInt!
+  totalAccessUsed: BigInt!
+  firstPermissionAt: BigInt!
+}
+
+# User aggregate
+type User @entity {
+  id: ID! # user address
+  address: Bytes!
+  tokenId: BigInt
+  hasActiveSBT: Boolean!
+  currentScore: BigInt
+  totalScoreUpdates: BigInt!
+  activePermissions: BigInt!
+  totalPermissionsGranted: BigInt!
+  firstActivityAt: BigInt!
+  lastActivityAt: BigInt!
+}

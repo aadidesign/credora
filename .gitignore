@@ -1,0 +1,43 @@
+# Dependencies
+/lib/
+/node_modules/
+/out/
+/cache/
+/artifacts/
+/typechain-types/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+/broadcast/
+/coverage/
+lcov.info
+
+# Debug
+*.log
+npm-debug.log*
+
+# Testing
+coverage.json
+
+# Backend
+backend/**/dist/
+backend/**/node_modules/
+backend/**/*.js.map
+
+# Subgraph
+backend/subgraph/generated/
+backend/subgraph/build/
