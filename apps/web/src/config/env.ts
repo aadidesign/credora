@@ -4,10 +4,20 @@
  * All Next.js public env vars should be accessed through this module for type safety and consistency.
  */
 
-/** Subgraph GraphQL endpoint (The Graph) */
+/**
+ * Subgraph GraphQL endpoint.
+ * The Graph's hosted service (api.thegraph.com) was sunset in June 2024.
+ * Deploy to The Graph Network via Subgraph Studio, then set this URL.
+ * Leave unset for local dev without subgraph (app works with empty indexed data).
+ */
 export const SUBGRAPH_URL =
-  process.env.NEXT_PUBLIC_SUBGRAPH_URL ||
-  "https://api.thegraph.com/subgraphs/name/credora/credit-scores";
+  process.env.NEXT_PUBLIC_SUBGRAPH_URL?.trim() || "";
+
+/** True only when a valid subgraph URL is configured (avoids CORS errors from deprecated endpoints) */
+export const SUBGRAPH_ENABLED = Boolean(
+  SUBGRAPH_URL &&
+    !SUBGRAPH_URL.includes("api.thegraph.com/subgraphs/name")
+);
 
 /** Default chain ID: 421614 = Arbitrum Sepolia, 42161 = Arbitrum One, 11155111 = Sepolia */
 export const CHAIN_ID = parseInt(
@@ -17,4 +27,16 @@ export const CHAIN_ID = parseInt(
 
 /** WalletConnect Cloud project ID for wallet connection */
 export const WALLETCONNECT_PROJECT_ID =
-  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "credora-web3-app";
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID?.trim() || "";
+
+/** True when a valid WalletConnect Project ID is set (32-char hex from cloud.walletconnect.com) */
+export const WALLETCONNECT_ENABLED = Boolean(
+  WALLETCONNECT_PROJECT_ID && WALLETCONNECT_PROJECT_ID.length >= 32
+);
+
+/** Optional: Override contract addresses (set after deployment) */
+export const CONTRACT_OVERRIDES = {
+  scoreSBT: process.env.NEXT_PUBLIC_SCORE_SBT_ADDRESS,
+  scoreOracle: process.env.NEXT_PUBLIC_SCORE_ORACLE_ADDRESS,
+  permissionManager: process.env.NEXT_PUBLIC_PERMISSION_MANAGER_ADDRESS,
+} as const;

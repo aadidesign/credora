@@ -3,6 +3,7 @@
 /**
  * @file use-subgraph.ts
  * @description Urql hooks for The Graph subgraph queries (User, ScoreUpdates, Permissions).
+ * When subgraph is not configured, queries are paused to avoid CORS errors.
  */
 import { useQuery } from "urql";
 import { useAccount } from "wagmi";
@@ -11,6 +12,7 @@ import {
   GET_SCORE_UPDATES_QUERY,
   GET_PERMISSIONS_QUERY,
 } from "@/lib/graphql/queries";
+import { SUBGRAPH_ENABLED } from "@/config";
 
 export function useSubgraphUser() {
   const { address } = useAccount();
@@ -19,7 +21,7 @@ export function useSubgraphUser() {
   const [result] = useQuery({
     query: GET_USER_QUERY,
     variables: { id },
-    pause: !address,
+    pause: !address || !SUBGRAPH_ENABLED,
   });
 
   return {
@@ -36,7 +38,7 @@ export function useSubgraphScoreUpdates(first = 10) {
   const [result] = useQuery({
     query: GET_SCORE_UPDATES_QUERY,
     variables: { owner, first },
-    pause: !address,
+    pause: !address || !SUBGRAPH_ENABLED,
   });
 
   return {
@@ -53,7 +55,7 @@ export function useSubgraphPermissions() {
   const [result] = useQuery({
     query: GET_PERMISSIONS_QUERY,
     variables: { user },
-    pause: !address,
+    pause: !address || !SUBGRAPH_ENABLED,
   });
 
   return {

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { GradientMesh } from "@/components/shared/gradient-mesh";
 import { LandingFeatures } from "@/components/landing/landing-features";
@@ -26,16 +27,18 @@ export default function HomePage() {
             reputation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/dashboard">
-              <Button size="xl" className="shadow-glow w-full sm:w-auto">
-                Launch App
-                <ArrowRight size={18} />
-              </Button>
+            <Link
+              href="/dashboard"
+              className={cn(buttonVariants({ size: "xl" }), "shadow-glow w-full sm:w-auto inline-flex")}
+            >
+              Launch App
+              <ArrowRight size={18} />
             </Link>
-            <Link href="#how-it-works">
-              <Button variant="outline" size="xl">
-                How it Works
-              </Button>
+            <Link
+              href="#how-it-works"
+              className={cn(buttonVariants({ variant: "outline", size: "xl" }), "w-full sm:w-auto inline-flex")}
+            >
+              How it Works
             </Link>
           </div>
         </div>
@@ -66,11 +69,12 @@ export default function HomePage() {
             Connect your wallet, mint your Soulbound credit score, and unlock
             uncollateralized lending opportunities across DeFi.
           </p>
-          <Link href="/dashboard">
-            <Button size="xl" className="shadow-glow">
-              Get Started
-              <ArrowRight size={18} />
-            </Button>
+          <Link
+            href="/dashboard"
+            className={cn(buttonVariants({ size: "xl" }), "shadow-glow inline-flex")}
+          >
+            Get Started
+            <ArrowRight size={18} />
           </Link>
         </div>
       </section>

@@ -13,8 +13,16 @@ export function useCredora() {
 
   const hasSBTQuery = useQuery({
     queryKey: ["credora", "hasSBT", address],
-    queryFn: () => (address ? client.hasSBT(address) : Promise.resolve(false)),
+    queryFn: async () => {
+      if (!address) return false;
+      try {
+        return await client.hasSBT(address);
+      } catch {
+        return false;
+      }
+    },
     enabled: isReady && !!address,
+    retry: false,
   });
 
   const scoreQuery = useQuery({
@@ -32,14 +40,30 @@ export function useCredora() {
 
   const tierQuery = useQuery({
     queryKey: ["credora", "tier", address],
-    queryFn: () => (address ? client.getTier(address) : null),
+    queryFn: async () => {
+      if (!address) return null;
+      try {
+        return await client.getTier(address);
+      } catch {
+        return null;
+      }
+    },
     enabled: isReady && !!address && hasSBTQuery.data === true,
+    retry: false,
   });
 
   const permissionsQuery = useQuery({
     queryKey: ["credora", "permissions", address],
-    queryFn: () => (address ? client.getAllPermissions(address) : []),
+    queryFn: async () => {
+      if (!address) return [];
+      try {
+        return await client.getAllPermissions(address);
+      } catch {
+        return [];
+      }
+    },
     enabled: isReady && !!address,
+    retry: false,
   });
 
   return {

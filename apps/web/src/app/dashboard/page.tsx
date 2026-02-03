@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCredora } from "@/hooks/use-credora";
 import { ScoreGauge } from "@/components/dashboard/score-gauge";
 import { TierBadge } from "@/components/dashboard/tier-badge";
 import { ActionCard } from "@/components/dashboard/action-card";
 import { useSubgraphScoreUpdates } from "@/hooks/use-subgraph";
-import { BadgeDollarSign, KeyRound, RefreshCw, ArrowRight, ExternalLink } from "lucide-react";
+import { BadgeDollarSign, KeyRound, ArrowRight, ExternalLink, Wallet } from "lucide-react";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -30,12 +30,6 @@ export default function DashboardPage() {
   } = useCredora();
   const { scoreUpdates } = useSubgraphScoreUpdates(5);
 
-  useEffect(() => {
-    if (!isConnected && typeof window !== "undefined") {
-      router.replace("/");
-    }
-  }, [isConnected, router]);
-
   const handleMintSBT = async () => {
     if (!hasSigner) return;
     try {
@@ -50,8 +44,19 @@ export default function DashboardPage() {
 
   if (!isConnected) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
-        <p className="text-muted-foreground">Connecting...</p>
+      <div className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-md mx-auto text-center"
+        >
+          <Wallet className="w-16 h-16 text-muted-foreground mx-auto mb-6 opacity-50" />
+          <h1 className="text-2xl font-bold mb-2">Dashboard</h1>
+          <p className="text-muted-foreground mb-8">
+            Connect your wallet to view your credit score and manage permissions.
+          </p>
+          <ConnectButton />
+        </motion.div>
       </div>
     );
   }

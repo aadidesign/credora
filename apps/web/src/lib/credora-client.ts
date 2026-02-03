@@ -4,11 +4,26 @@
  * @file credora-client.ts
  * @description React hook for CredoraClient instantiation with Wagmi signer/provider.
  */
-import { CredoraClient as SDKClient, NETWORKS, getNetworkByChainId } from "@credora/sdk";
+import { CredoraClient as SDKClient, NETWORKS, getNetworkByChainId, type NetworkConfig } from "@credora/sdk";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount, useWalletClient } from "wagmi";
-import { CHAIN_ID } from "@/config";
+import { CHAIN_ID, CONTRACT_OVERRIDES } from "@/config";
+
+/** Merge env contract overrides into network config */
+function applyContractOverrides(network: NetworkConfig): NetworkConfig {
+  const overrides = CONTRACT_OVERRIDES;
+  if (!overrides.scoreSBT && !overrides.permissionManager) return network;
+  return {
+    ...network,
+    contracts: {
+      ...network.contracts,
+      ...(overrides.scoreSBT && { scoreSBT: overrides.scoreSBT }),
+      ...(overrides.scoreOracle && { scoreOracle: overrides.scoreOracle }),
+      ...(overrides.permissionManager && { permissionManager: overrides.permissionManager }),
+    },
+  };
+}
 
 export function useCredoraClient() {
   const { address, chainId, isConnected } = useAccount();
@@ -39,7 +54,8 @@ export function useCredoraClient() {
   }, [walletClient, address]);
 
   const client = useMemo(() => {
-    const network = getNetworkByChainId(chainId || CHAIN_ID) || NETWORKS.arbitrumSepolia;
+    const baseNetwork = getNetworkByChainId(chainId || CHAIN_ID) || NETWORKS.arbitrumSepolia;
+    const network = applyContractOverrides(baseNetwork);
     return new SDKClient({
       network,
       provider: provider ?? undefined,

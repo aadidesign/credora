@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useAccount } from "wagmi";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCredora } from "@/hooks/use-credora";
 import { GrantAccessModal } from "@/components/permissions/grant-access-modal";
-import { KeyRound, Plus, ArrowLeft, Trash2 } from "lucide-react";
+import { KeyRound, Plus, ArrowLeft, Trash2, Wallet } from "lucide-react";
 
 export default function PermissionsPage() {
-  const router = useRouter();
   const { isConnected } = useAccount();
   const {
     permissions,
@@ -22,12 +21,6 @@ export default function PermissionsPage() {
     hasSigner,
   } = useCredora();
   const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isConnected && typeof window !== "undefined") {
-      router.replace("/");
-    }
-  }, [isConnected, router]);
 
   const handleGrant = async (
     protocol: string,
@@ -50,8 +43,19 @@ export default function PermissionsPage() {
 
   if (!isConnected) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
-        <p className="text-muted-foreground">Connecting...</p>
+      <div className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-md mx-auto text-center"
+        >
+          <Wallet className="w-16 h-16 text-muted-foreground mx-auto mb-6 opacity-50" />
+          <h1 className="text-2xl font-bold mb-2">Permissions</h1>
+          <p className="text-muted-foreground mb-8">
+            Connect your wallet to manage protocol access permissions.
+          </p>
+          <ConnectButton />
+        </motion.div>
       </div>
     );
   }

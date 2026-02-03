@@ -1,34 +1,37 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCredora } from "@/hooks/use-credora";
 import { useSubgraphScoreUpdates } from "@/hooks/use-subgraph";
 import { ScoreGauge } from "@/components/dashboard/score-gauge";
 import { TierBadge } from "@/components/dashboard/tier-badge";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Wallet } from "lucide-react";
 
 export default function ScorePage() {
-  const router = useRouter();
   const { isConnected } = useAccount();
   const { address, hasSBT, score, tier, isLoading } = useCredora();
   const { scoreUpdates, isLoading: historyLoading } = useSubgraphScoreUpdates(20);
 
-  useEffect(() => {
-    if (!isConnected && typeof window !== "undefined") {
-      router.replace("/");
-    }
-  }, [isConnected, router]);
-
   if (!isConnected) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
-        <p className="text-muted-foreground">Connecting...</p>
+      <div className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-md mx-auto text-center"
+        >
+          <Wallet className="w-16 h-16 text-muted-foreground mx-auto mb-6 opacity-50" />
+          <h1 className="text-2xl font-bold mb-2">Score Details</h1>
+          <p className="text-muted-foreground mb-8">
+            Connect your wallet to view your credit score breakdown and history.
+          </p>
+          <ConnectButton />
+        </motion.div>
       </div>
     );
   }
