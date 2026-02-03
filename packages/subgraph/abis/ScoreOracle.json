@@ -1,0 +1,31 @@
+[
+  {
+    "type": "event",
+    "name": "ScoreUpdateRequested",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "requestId", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "ScoreUpdated",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "score", "type": "uint256", "indexed": false },
+      { "name": "calculationHash", "type": "bytes32", "indexed": false },
+      { "name": "oracle", "type": "address", "indexed": true },
+      { "name": "timestamp", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "OracleAdded",
+    "inputs": [{ "name": "oracle", "type": "address", "indexed": true }]
+  },
+  {
+    "type": "event",
+    "name": "OracleRemoved",
+    "inputs": [{ "name": "oracle", "type": "address", "indexed": true }]
+  }
+]

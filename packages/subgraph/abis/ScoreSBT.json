@@ -1,0 +1,30 @@
+[
+  {
+    "type": "event",
+    "name": "ScoreMinted",
+    "inputs": [
+      { "name": "owner", "type": "address", "indexed": true },
+      { "name": "tokenId", "type": "uint256", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "ScoreUpdated",
+    "inputs": [
+      { "name": "tokenId", "type": "uint256", "indexed": true },
+      { "name": "oldScore", "type": "uint256", "indexed": false },
+      { "name": "newScore", "type": "uint256", "indexed": false },
+      { "name": "dataVersion", "type": "uint256", "indexed": false },
+      { "name": "updatedBy", "type": "address", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "Transfer",
+    "inputs": [
+      { "name": "from", "type": "address", "indexed": true },
+      { "name": "to", "type": "address", "indexed": true },
+      { "name": "tokenId", "type": "uint256", "indexed": true }
+    ]
+  }
+]

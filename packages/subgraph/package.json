@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
+    "generate-abis": "sh scripts/generate-abis.sh",
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 credora/credit-scores",

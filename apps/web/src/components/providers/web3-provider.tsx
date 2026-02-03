@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider as UrqlProvider } from "urql";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { config } from "@/lib/wagmi";
+import { validateEnv } from "@/config/validate";
 import { graphqlClient } from "@/lib/graphql/client";
 import "@rainbow-me/rainbowkit/styles.css";
 
@@ -34,6 +35,10 @@ function useWalletConnectErrorHandler() {
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
   useWalletConnectErrorHandler();
+
+  useEffect(() => {
+    validateEnv();
+  }, []);
 
   return (
     <WagmiProvider config={config}>

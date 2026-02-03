@@ -1,0 +1,84 @@
+# Credora CI - Contracts, SDK, Frontend
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  contracts:
+    name: Smart Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Install deps
+        run: forge install
+      - name: Build
+        run: forge build
+      - name: Test
+        run: forge test
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    needs: []
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install root deps
+        run: npm install
+        working-directory: .
+      - name: Install SDK deps
+        run: npm ci
+        working-directory: packages/sdk
+      - name: Build SDK
+        run: npm run build
+        working-directory: packages/sdk
+      - name: Install web deps
+        run: npm ci
+        working-directory: apps/web
+      - name: Build web
+        run: npm run build
+        working-directory: apps/web
+        env:
+          NEXT_PUBLIC_CHAIN_ID: "421614"
+          NEXT_PUBLIC_SUBGRAPH_URL: ""
+
+  subgraph:
+    name: Subgraph
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm install
+        working-directory: packages/subgraph
+      - run: npm run codegen
+        working-directory: packages/subgraph
+      - run: npm run build
+        working-directory: packages/subgraph
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+        working-directory: apps/web
+      - run: npm run lint
+        working-directory: apps/web

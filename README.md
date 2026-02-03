@@ -601,7 +601,8 @@ credora/
 ├── test/                # Foundry tests
 ├── packages/
 │   ├── sdk/             # TypeScript SDK
-│   └── subgraph/        # The Graph configuration (schema, mappings)
+│   ├── subgraph/        # The Graph configuration (schema, mappings)
+│   └── oracle/          # Oracle service (score updates)
 ├── monitoring/          # Alert configurations
 ├── foundry.toml         # Foundry configuration
 ├── remappings.txt       # Import remappings

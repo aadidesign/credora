@@ -1,0 +1,75 @@
+# Credora Local Development
+# Usage:
+#   docker-compose up -d              # Anvil only
+#   docker-compose --profile graph up # Anvil + Graph Node (for subgraph)
+#   docker-compose --profile full up  # Anvil + Graph Node + Frontend
+
+services:
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:latest
+    command: anvil -h 0.0.0.0
+    ports:
+      - "8545:8545"
+    healthcheck:
+      test: ["CMD", "cast", "block-number", "--rpc-url", "http://localhost:8545"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  graph-node:
+    image: graphprotocol/graph-node:latest
+    depends_on:
+      - ipfs
+      - postgres
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: "ipfs:5001"
+      ethereum: "anvil:http://anvil:8545"
+      GRAPH_LOG: info
+    ports:
+      - "8020:8020"
+    profiles:
+      - graph
+
+  ipfs:
+    image: ipfs/kubo:latest
+    ports:
+      - "5001:5001"
+    volumes:
+      - ipfs_data:/data/ipfs
+    profiles:
+      - graph
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    profiles:
+      - graph
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_CHAIN_ID=31337
+      - NEXT_PUBLIC_SUBGRAPH_URL=
+    depends_on:
+      - anvil
+    profiles:
+      - full
+
+volumes:
+  ipfs_data:
+  postgres_data:

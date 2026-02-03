@@ -1,0 +1,31 @@
+[
+  {
+    "type": "event",
+    "name": "AccessGranted",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "protocol", "type": "address", "indexed": true },
+      { "name": "expiresAt", "type": "uint256", "indexed": false },
+      { "name": "maxRequests", "type": "uint256", "indexed": false },
+      { "name": "permissionHash", "type": "bytes32", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AccessRevoked",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "protocol", "type": "address", "indexed": true },
+      { "name": "permissionHash", "type": "bytes32", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AccessUsed",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "protocol", "type": "address", "indexed": true },
+      { "name": "remainingRequests", "type": "uint256", "indexed": false }
+    ]
+  }
+]

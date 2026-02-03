@@ -1,0 +1,24 @@
+{
+  "name": "@credora/oracle",
+  "version": "1.0.0",
+  "description": "Credora oracle service - fetches data, calculates scores, submits to ScoreOracle",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts"
+  },
+  "dependencies": {
+    "@credora/sdk": "file:../sdk",
+    "ethers": "^6.9.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.6.3"
+  }
+}
