@@ -13,12 +13,12 @@ const steps = [
   {
     icon: RefreshCw,
     title: "Score Updates",
-    description: "Oracles aggregate data and update scores. Minimum 1-hour interval. Your score reflects your DeFi history.",
+    description: "Oracles aggregate data via The Graph and update scores. Rate limiting: minimum 1-hour interval between updates.",
   },
   {
     icon: KeyRound,
     title: "Grant Access",
-    description: "Grant lending protocols permission to read your score. Set duration and request limits. Revoke anytime.",
+    description: "Grant lending protocols permission to read your score. Set duration and max requests. Revoke anytime.",
   },
 ];
 
@@ -32,10 +32,10 @@ export function HowItWorks() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2 id="how-it-works" className="text-3xl md:text-4xl font-bold mb-4">
+        <h2 id="how-it-works" className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
           How It Works
         </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
           Three simple steps to unlock uncollateralized lending with your
           on-chain reputation.
         </p>
@@ -51,7 +51,7 @@ export function HowItWorks() {
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="relative"
           >
-            <Card className="h-full glass border-credora-cyan/20">
+            <Card className="h-full glass-card border-credora-cyan/20">
               <CardContent className="pt-8 pb-8">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-14 h-14 rounded-full bg-credora-cyan/20 flex items-center justify-center text-credora-cyan font-bold text-xl">

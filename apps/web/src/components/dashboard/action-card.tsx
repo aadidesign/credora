@@ -24,7 +24,7 @@ export function ActionCard({
   loading = false,
 }: ActionCardProps) {
   return (
-    <Card className="glass hover:border-credora-cyan/30 transition-colors">
+    <Card className="glass-card">
       <CardHeader>
         <div className="w-10 h-10 rounded-lg bg-credora-cyan/10 flex items-center justify-center mb-2">
           <Icon className="w-5 h-5 text-credora-cyan" />

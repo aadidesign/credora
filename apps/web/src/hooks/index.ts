@@ -8,4 +8,5 @@ export {
   useSubgraphUser,
   useSubgraphScoreUpdates,
   useSubgraphPermissions,
+  useSubgraphProtocolStats,
 } from "./use-subgraph";

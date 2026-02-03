@@ -37,7 +37,7 @@ export default function ScorePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-12">
+    <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export default function ScorePage() {
         </p>
 
         {!hasSBT ? (
-          <Card className="glass">
+          <Card className="glass-card">
             <CardContent className="py-16 text-center">
               <p className="text-muted-foreground mb-6">
                 You haven&apos;t minted your Soulbound credit score yet.
@@ -69,7 +69,7 @@ export default function ScorePage() {
           </Card>
         ) : (
           <div className="grid gap-6 lg:grid-cols-2">
-            <Card className="glass">
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   Current Score
@@ -99,30 +99,42 @@ export default function ScorePage() {
               </CardContent>
             </Card>
 
-            <Card className="glass">
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle>Scoring Factors</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Your score is calculated from:
+                  Your score (0–1000) is calculated from these factors:
                 </p>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4">
-                  <li className="flex justify-between py-2 border-b border-border/40">
-                    <span>Wallet Age</span>
-                    <span className="text-muted-foreground">20% weight</span>
+                  <li className="flex flex-col gap-1 py-2 border-b border-border/40">
+                    <div className="flex justify-between">
+                      <span>Wallet Age</span>
+                      <span className="text-muted-foreground">20%</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground/80">sqrt(days_active) × 10</span>
                   </li>
-                  <li className="flex justify-between py-2 border-b border-border/40">
-                    <span>Transaction Volume</span>
-                    <span className="text-muted-foreground">25% weight</span>
+                  <li className="flex flex-col gap-1 py-2 border-b border-border/40">
+                    <div className="flex justify-between">
+                      <span>Transaction Volume</span>
+                      <span className="text-muted-foreground">25%</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground/80">log₁₀(total_eth) × 100</span>
                   </li>
-                  <li className="flex justify-between py-2 border-b border-border/40">
-                    <span>Repayment History</span>
-                    <span className="text-muted-foreground">35% weight</span>
+                  <li className="flex flex-col gap-1 py-2 border-b border-border/40">
+                    <div className="flex justify-between">
+                      <span>Repayment History</span>
+                      <span className="text-muted-foreground">35%</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground/80">(repaid / total) × 1000</span>
                   </li>
-                  <li className="flex justify-between py-2">
-                    <span>Protocol Diversity</span>
-                    <span className="text-muted-foreground">20% weight</span>
+                  <li className="flex flex-col gap-1 py-2">
+                    <div className="flex justify-between">
+                      <span>Protocol Diversity</span>
+                      <span className="text-muted-foreground">20%</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground/80">(unique_protocols / 10) × 1000</span>
                   </li>
                 </ul>
               </CardContent>
@@ -132,7 +144,7 @@ export default function ScorePage() {
 
         {/* Score History */}
         <div className="mt-8">
-          <Card className="glass">
+          <Card className="glass-card">
             <CardHeader>
               <CardTitle>Score Update History</CardTitle>
               <p className="text-sm text-muted-foreground">

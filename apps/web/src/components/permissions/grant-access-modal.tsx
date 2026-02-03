@@ -64,7 +64,7 @@ export function GrantAccessModal({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
         >
-          <Card className="glass">
+          <Card className="glass-card">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Grant Access</CardTitle>
               <Button variant="ghost" size="icon" onClick={onClose}>

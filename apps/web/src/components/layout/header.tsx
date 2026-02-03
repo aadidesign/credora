@@ -35,7 +35,7 @@ export function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
+                  className="text-sm font-medium text-muted-foreground hover:text-credora-cyan transition-colors whitespace-nowrap"
                 >
                   {link.label}
                 </Link>
@@ -77,7 +77,7 @@ export function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    className="block py-3 text-sm font-medium text-muted-foreground hover:text-credora-cyan transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.label}

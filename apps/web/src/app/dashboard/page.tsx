@@ -62,7 +62,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-12">
+    <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -79,14 +79,21 @@ export default function DashboardPage() {
 
         {isLoading && !score ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="glass animate-pulse h-80" />
-            <Card className="glass animate-pulse h-80" />
-            <Card className="glass animate-pulse h-80" />
+            <Card className="glass-card h-80">
+              <div className="h-full flex items-center justify-center">
+                <div className="animate-pulse flex flex-col items-center gap-4">
+                  <div className="w-32 h-32 rounded-full bg-muted/50" />
+                  <div className="h-8 w-16 bg-muted/50 rounded" />
+                </div>
+              </div>
+            </Card>
+            <Card className="glass-card h-80 animate-pulse" />
+            <Card className="glass-card h-80 animate-pulse" />
           </div>
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Score Card */}
-            <Card className="lg:col-span-2 glass">
+            <Card className="lg:col-span-2 glass-card">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   Credit Score
@@ -166,7 +173,7 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="glass">
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   Active Permissions
@@ -207,7 +214,7 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Card className="glass">
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle>Recent Score Updates</CardTitle>
                 <p className="text-sm text-muted-foreground">

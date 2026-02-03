@@ -2,32 +2,38 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Key, Database, TrendingUp } from "lucide-react";
+import { Shield, Key, Database, TrendingUp, ShieldCheck } from "lucide-react";
 
 const features = [
   {
     icon: Shield,
     title: "Soulbound Credit Scores",
     description:
-      "Non-transferable ERC-721 tokens that represent your on-chain creditworthiness. Your score travels with your identity, not your wallet balance.",
+      "Non-transferable ERC-721 tokens storing credit scores (0–1000). Your score travels with your identity, not your wallet balance.",
   },
   {
     icon: Key,
     title: "Permissioned Access",
     description:
-      "You control who sees your score. Grant time-limited, quota-based access to lending protocols. Revoke anytime.",
+      "Time-limited, quota-based permission system. You control who sees your score. Grant access to protocols, revoke anytime.",
   },
   {
     icon: Database,
     title: "Oracle System",
     description:
-      "Signature-verified score updates with rate limiting. Aggregates data from multiple protocols via The Graph for accurate scoring.",
+      "Signature-verified score updates with rate limiting. Aggregates on-chain data from multiple protocols via The Graph.",
   },
   {
     icon: TrendingUp,
     title: "Multi-Factor Scoring",
     description:
-      "Wallet age, transaction volume, repayment history, and protocol diversity. Transparent, composable, and manipulation-resistant.",
+      "Wallet age (20%), transaction volume (25%), repayment history (35%), protocol diversity (20%). Transparent and manipulation-resistant.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Emergency Recovery",
+    description:
+      "7-day cooldown recovery mechanism for lost keys. Regain access to your Soulbound score safely.",
   },
 ];
 
@@ -54,31 +60,36 @@ export function LandingFeatures() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
           Built for DeFi&apos;s Future
         </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
           Credora creates decentralized credit infrastructure that bridges
           traditional lending concepts with Web3 transparency and composability.
         </p>
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         variants={container}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-50px" }}
       >
         {features.map((feature) => (
-          <motion.div key={feature.title} variants={item}>
-            <Card className="h-full glass hover:border-credora-cyan/30 transition-colors">
+          <motion.div
+            key={feature.title}
+            variants={item}
+            whileHover={{ y: -4 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card className="h-full glass-card group">
               <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-credora-cyan/10 flex items-center justify-center mb-2">
+                <div className="w-12 h-12 rounded-xl bg-credora-cyan/10 flex items-center justify-center mb-3 group-hover:bg-credora-cyan/15 transition-colors">
                   <feature.icon className="w-6 h-6 text-credora-cyan" />
                 </div>
                 <CardTitle className="text-lg">{feature.title}</CardTitle>
-                <CardDescription>{feature.description}</CardDescription>
+                <CardDescription className="text-muted-foreground/90">{feature.description}</CardDescription>
               </CardHeader>
             </Card>
           </motion.div>

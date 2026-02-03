@@ -24,6 +24,8 @@ export const metadata: Metadata = {
     "Trustless, on-chain credit scoring using Soulbound Tokens. Enable uncollateralized lending at scale with privacy-preserving, composable credit scores.",
   keywords: ["Credora", "DeFi", "credit score", "Soulbound", "Web3", "lending"],
   authors: [{ name: "Credora" }],
+  creator: "Credora",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   openGraph: {
     title: "Credora | Decentralized Credit Scoring for Web3",
     description:
@@ -39,6 +41,21 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: "/icon",
+    apple: "/apple-icon",
+  },
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0f0f23" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f0f23" },
+  ],
+  manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

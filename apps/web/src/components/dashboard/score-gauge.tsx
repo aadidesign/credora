@@ -30,7 +30,7 @@ export function ScoreGauge({
   };
 
   return (
-    <div className={`relative inline-flex ${className}`}>
+    <div className={`relative inline-flex glow-cyan-sm rounded-full ${className}`}>
       <svg width={size} height={size} className="transform -rotate-90">
         <circle
           cx={size / 2}

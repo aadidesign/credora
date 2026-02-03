@@ -4,6 +4,7 @@ import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import {
   metaMaskWallet,
   injectedWallet,
+  walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { arbitrum, arbitrumSepolia, sepolia } from "wagmi/chains";
 import { WALLETCONNECT_PROJECT_ID, WALLETCONNECT_ENABLED } from "@/config";
@@ -23,17 +24,19 @@ const chains = [
 ] as const;
 
 /**
- * When WalletConnect Project ID is missing/invalid, use only injected wallets
- * (MetaMask, etc.) to avoid "Connection interrupted" WebSocket errors.
+ * Curated wallet list: MetaMask + Injected (+ WalletConnect when configured).
+ * Excludes Trust, Phantom, Rainbow, etc. to avoid multiple wallet popups.
  */
-const wallets = WALLETCONNECT_ENABLED
-  ? undefined
-  : [
-      {
-        groupName: "Injected",
-        wallets: [metaMaskWallet, injectedWallet],
-      },
-    ];
+const wallets = [
+  {
+    groupName: "Recommended",
+    wallets: [
+      metaMaskWallet,
+      ...(WALLETCONNECT_ENABLED ? [walletConnectWallet] : []),
+      injectedWallet,
+    ],
+  },
+];
 
 /** Wagmi config for RainbowKit wallet connection */
 export const config = getDefaultConfig({

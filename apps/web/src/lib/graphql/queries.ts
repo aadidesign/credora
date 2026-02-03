@@ -50,3 +50,17 @@ export const GET_PERMISSIONS_QUERY = gql`
     }
   }
 `;
+
+/** For protocol integrators: stats for a protocol address (aligns with README) */
+export const GET_PROTOCOL_STATS_QUERY = gql`
+  query GetProtocolStats($id: Bytes!) {
+    protocolStats(id: $id) {
+      id
+      protocol
+      totalPermissionsReceived
+      activePermissions
+      totalAccessUsed
+      firstPermissionAt
+    }
+  }
+`;

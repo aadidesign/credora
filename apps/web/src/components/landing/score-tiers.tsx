@@ -21,8 +21,8 @@ export function ScoreTiers() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Score Tiers</h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Score Tiers</h2>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
           Your credit score (0–1000) maps to a tier. Higher tiers unlock better
           lending terms across integrated protocols.
         </p>

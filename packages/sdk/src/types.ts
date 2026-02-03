@@ -181,6 +181,7 @@ export interface TransactionResult {
 /**
  * Score tier thresholds
  */
+/** Score tiers aligned with backend README */
 export const SCORE_TIERS: ScoreTier[] = [
     {
         tier: 0,
@@ -194,21 +195,21 @@ export const SCORE_TIERS: ScoreTier[] = [
         name: "Established",
         minScore: 300,
         maxScore: 549,
-        description: "Some DeFi experience with moderate history"
+        description: "Some DeFi experience"
     },
     {
         tier: 2,
         name: "Trusted",
         minScore: 550,
         maxScore: 749,
-        description: "Solid track record in DeFi"
+        description: "Solid track record"
     },
     {
         tier: 3,
         name: "Prime",
         minScore: 750,
         maxScore: 1000,
-        description: "Excellent credit history and reputation"
+        description: "Excellent credit history"
     }
 ];
 

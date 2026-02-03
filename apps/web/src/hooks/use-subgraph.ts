@@ -11,6 +11,7 @@ import {
   GET_USER_QUERY,
   GET_SCORE_UPDATES_QUERY,
   GET_PERMISSIONS_QUERY,
+  GET_PROTOCOL_STATS_QUERY,
 } from "@/lib/graphql/queries";
 import { SUBGRAPH_ENABLED } from "@/config";
 
@@ -60,6 +61,23 @@ export function useSubgraphPermissions() {
 
   return {
     permissions: result.data?.permissions ?? [],
+    isLoading: result.fetching,
+    error: result.error,
+  };
+}
+
+/** For protocol integrators: get stats for a protocol address */
+export function useSubgraphProtocolStats(protocolAddress: string | undefined) {
+  const id = protocolAddress ? protocolAddress.toLowerCase() : "";
+
+  const [result] = useQuery({
+    query: GET_PROTOCOL_STATS_QUERY,
+    variables: { id },
+    pause: !protocolAddress || !SUBGRAPH_ENABLED,
+  });
+
+  return {
+    protocolStats: result.data?.protocolStats,
     isLoading: result.fetching,
     error: result.error,
   };

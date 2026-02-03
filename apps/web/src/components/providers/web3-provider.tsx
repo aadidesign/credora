@@ -5,6 +5,7 @@ import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider as UrqlProvider } from "urql";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { config } from "@/lib/wagmi";
 import { graphqlClient } from "@/lib/graphql/client";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -46,7 +47,9 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
           })}
           modalSize="compact"
         >
-          {children}
+          <TooltipProvider delayDuration={300}>
+            {children}
+          </TooltipProvider>
         </RainbowKitProvider>
         </UrqlProvider>
       </QueryClientProvider>

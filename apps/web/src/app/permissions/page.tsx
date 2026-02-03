@@ -61,7 +61,7 @@ export default function PermissionsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-12">
+    <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -91,7 +91,7 @@ export default function PermissionsPage() {
           </Button>
         </div>
 
-        <Card className="glass">
+        <Card className="glass-card">
           <CardHeader>
             <CardTitle>Active Permissions</CardTitle>
             <p className="text-sm text-muted-foreground">

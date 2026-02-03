@@ -51,6 +51,9 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground antialiased;
   }
@@ -74,12 +77,38 @@
   @apply bg-muted-foreground/50;
 }
 
-/* Glassmorphism utility */
+/* Glassmorphism & Web3 utilities */
 @layer utilities {
   .glass {
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
   }
   .glass-dark {
     @apply bg-black/20 backdrop-blur-xl border border-white/5;
+  }
+  .glass-card {
+    @apply bg-white/[0.02] backdrop-blur-xl border border-white/[0.08] hover:border-credora-cyan/20 transition-colors;
+  }
+  .gradient-text {
+    @apply bg-gradient-to-r from-credora-cyan via-credora-green to-credora-cyan bg-clip-text text-transparent;
+  }
+  .gradient-border {
+    @apply relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-r before:from-credora-cyan/50 before:via-credora-green/30 before:to-credora-cyan/50 before:-z-10;
+  }
+}
+
+/* Grid pattern background (Web3 aesthetic) */
+.bg-grid-pattern {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Glow effects */
+@layer utilities {
+  .glow-cyan {
+    box-shadow: 0 0 40px rgba(0, 212, 170, 0.15);
+  }
+  .glow-cyan-sm {
+    box-shadow: 0 0 20px rgba(0, 212, 170, 0.1);
   }
 }
