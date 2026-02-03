@@ -407,6 +407,13 @@ export class CredoraClient {
     }
 
     /**
+     * Get the score oracle contract instance (for requestScoreUpdate etc.)
+     */
+    getScoreOracleContract() {
+        return this.scoreOracle;
+    }
+
+    /**
      * Get network configuration
      * @returns Current network config
      */

@@ -1,0 +1,18 @@
+{
+  "name": "@credora/subgraph",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 credora/credit-scores",
+    "deploy:hosted": "graph deploy --product hosted-service credora/credit-scores",
+    "deploy:studio": "graph deploy --studio credora-credit-scores",
+    "create:local": "graph create --node http://localhost:8020/ credora/credit-scores",
+    "remove:local": "graph remove --node http://localhost:8020/ credora/credit-scores"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.64.0",
+    "@graphprotocol/graph-ts": "^0.32.0"
+  }
+}

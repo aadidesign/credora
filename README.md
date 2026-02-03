@@ -23,6 +23,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
+- [Frontend](#frontend)
 - [Smart Contracts](#smart-contracts)
 - [SDK Usage](#sdk-usage)
 - [Testing](#testing)
@@ -178,7 +179,19 @@ anvil
 forge script script/Deploy.s.sol:DeployLocal --fork-url http://localhost:8545 --broadcast
 ```
 
-### 4. Interact with Contracts
+### 4. Run the Frontend
+
+```bash
+# From project root
+npm run dev
+
+# Or from apps/web
+cd apps/web && npm run dev
+```
+
+The web app runs at [http://localhost:3000](http://localhost:3000). Connect your wallet (Arbitrum Sepolia recommended), mint your SBT, and manage permissions.
+
+### 5. Interact with Contracts
 
 ```bash
 # Mint an SBT
@@ -187,6 +200,60 @@ cast send $SCORE_SBT "mintSelf()" --private-key $PRIVATE_KEY
 # Check score
 cast call $SCORE_SBT "getScoreValue(address)" $USER_ADDRESS
 ```
+
+---
+
+## 🌐 Frontend
+
+The Credora web app is a production-ready Next.js frontend with a crypto/Web3 aesthetic.
+
+### Tech Stack
+
+- **Next.js 14** (App Router) - SSR, routing, fullstack readiness
+- **Tailwind CSS** - Utility-first styling, dark mode
+- **shadcn/ui** - Accessible UI components
+- **Framer Motion** - Animations and transitions
+- **Wagmi + RainbowKit** - Wallet connection (MetaMask, WalletConnect, etc.)
+- **@credora/sdk** - Protocol interactions
+- **urql** - The Graph subgraph queries (subgraph lives in `packages/subgraph`)
+
+### Running the Frontend
+
+```bash
+# Install dependencies (from project root)
+cd apps/web && npm install
+
+# Development
+npm run dev
+
+# Production build
+npm run build
+npm run start
+```
+
+### Environment Variables
+
+Create `apps/web/.env.local` from `apps/web/.env.example`:
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUBGRAPH_URL` | The Graph subgraph endpoint |
+| `NEXT_PUBLIC_CHAIN_ID` | Default chain (421614 = Arbitrum Sepolia) |
+| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | WalletConnect project ID from [cloud.walletconnect.com](https://cloud.walletconnect.com) |
+
+### Pages
+
+- **/** - Landing page with features, how it works, score tiers
+- **/dashboard** - Credit score, mint SBT, quick actions, permissions preview
+- **/score** - Score breakdown, update history
+- **/permissions** - Grant/revoke protocol access
+
+### Supported Networks
+
+- Arbitrum Sepolia (testnet)
+- Arbitrum One
+- Sepolia
+- Anvil Local (development)
 
 ---
 
@@ -527,13 +594,14 @@ query GetProtocolStats($protocol: Bytes!) {
 
 ```
 credora/
+├── apps/
+│   └── web/             # Next.js frontend (React, Wagmi, RainbowKit)
 ├── contracts/           # Solidity smart contracts
-├── script/              # Deployment scripts
+├── script/              # Foundry deployment scripts
 ├── test/                # Foundry tests
 ├── packages/
-│   └── sdk/             # TypeScript SDK
-├── backend/
-│   └── subgraph/        # The Graph configuration
+│   ├── sdk/             # TypeScript SDK
+│   └── subgraph/        # The Graph configuration (schema, mappings)
 ├── monitoring/          # Alert configurations
 ├── foundry.toml         # Foundry configuration
 ├── remappings.txt       # Import remappings

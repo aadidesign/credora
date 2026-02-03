@@ -1,6 +1,9 @@
-# Dependencies
+# Dependencies - ignore node_modules everywhere
+node_modules/
+**/node_modules/
+
+# Foundry
 /lib/
-/node_modules/
 /out/
 /cache/
 /artifacts/
@@ -25,6 +28,12 @@ Thumbs.db
 /broadcast/
 /coverage/
 lcov.info
+**/dist/
+**/*.js.map
+
+# Next.js (apps/web)
+apps/web/.next/
+apps/web/out/
 
 # Debug
 *.log
@@ -33,11 +42,6 @@ npm-debug.log*
 # Testing
 coverage.json
 
-# Backend
-backend/**/dist/
-backend/**/node_modules/
-backend/**/*.js.map
-
-# Subgraph
-backend/subgraph/generated/
-backend/subgraph/build/
+# Subgraph (packages/subgraph)
+packages/subgraph/generated/
+packages/subgraph/build/
