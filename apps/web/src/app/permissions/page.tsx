@@ -1,15 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useAccount } from "wagmi";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, toast, NoWalletConnected, NoPermissions, NoResults } from "@/components/ui";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCredora } from "@/hooks/use-credora";
-import { GrantAccessModal } from "@/components/permissions/grant-access-modal";
-import { KeyRound, Plus, ArrowLeft, Trash2, Wallet } from "lucide-react";
+import { useDebounce } from "@/hooks";
+import { GrantAccessModal, PermissionFilters, PermissionCard, type PermissionStatus } from "@/components/permissions";
+import { Plus, ArrowLeft } from "lucide-react";
+
+// Lazy load chart
+const PermissionsChart = dynamic(
+  () => import("@/components/charts/permissions-chart").then((m) => m.PermissionsChart),
+  { ssr: false, loading: () => <div className="h-[250px] animate-pulse bg-muted/20 rounded-lg" /> }
+);
 
 export default function PermissionsPage() {
   const { isConnected } = useAccount();
@@ -21,41 +29,76 @@ export default function PermissionsPage() {
     hasSigner,
   } = useCredora();
   const [modalOpen, setModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<PermissionStatus>("all");
+  const debouncedSearch = useDebounce(search, 300);
+
+  // Filter permissions
+  const filteredPermissions = useMemo(() => {
+    const now = Math.floor(Date.now() / 1000);
+    return permissions.filter((perm) => {
+      // Search filter
+      if (debouncedSearch && !perm.protocol.toLowerCase().includes(debouncedSearch.toLowerCase())) {
+        return false;
+      }
+      // Status filter
+      const isExpired = Number(perm.expiresAt) < now;
+      const status = !perm.isActive ? "revoked" : isExpired ? "expired" : "active";
+      if (statusFilter !== "all" && status !== statusFilter) {
+        return false;
+      }
+      return true;
+    });
+  }, [permissions, debouncedSearch, statusFilter]);
+
+  // Stats for chart
+  const stats = useMemo(() => {
+    const now = Math.floor(Date.now() / 1000);
+    let active = 0, expired = 0, revoked = 0;
+    permissions.forEach((perm) => {
+      if (!perm.isActive) revoked++;
+      else if (Number(perm.expiresAt) < now) expired++;
+      else active++;
+    });
+    return { active, expired, revoked };
+  }, [permissions]);
 
   const handleGrant = async (
     protocol: string,
     _durationDays: number,
     maxRequests: number
   ) => {
-    const duration = _durationDays * 24 * 60 * 60; // seconds
-    await client.grantAccess({
-      protocol,
-      duration,
-      maxRequests,
-    });
-    refetch();
+    try {
+      toast.loading("Granting access...");
+      const duration = _durationDays * 24 * 60 * 60;
+      await client.grantAccess({ protocol, duration, maxRequests });
+      toast.success("Access granted successfully!");
+      refetch();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to grant access");
+    }
   };
 
   const handleRevoke = async (protocol: string) => {
-    await client.revokeAccess(protocol);
-    refetch();
+    try {
+      toast.loading("Revoking access...");
+      await client.revokeAccess(protocol);
+      toast.success("Access revoked");
+      refetch();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to revoke access");
+    }
   };
 
   if (!isConnected) {
     return (
       <div className="container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-md mx-auto text-center"
-        >
-          <Wallet className="w-16 h-16 text-muted-foreground mx-auto mb-6 opacity-50" />
-          <h1 className="text-2xl font-bold mb-2">Permissions</h1>
-          <p className="text-muted-foreground mb-8">
-            Connect your wallet to manage protocol access permissions.
-          </p>
+        <NoWalletConnected />
+        <div className="flex justify-center mt-6">
           <ConnectButton />
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -91,76 +134,64 @@ export default function PermissionsPage() {
           </Button>
         </div>
 
-        <Card className="glass-card">
-          <CardHeader>
-            <CardTitle>Active Permissions</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Protocols you&apos;ve granted access to read your score
-            </p>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <p className="text-muted-foreground py-8 text-center">
-                Loading...
-              </p>
-            ) : permissions.length === 0 ? (
-              <div className="py-16 text-center">
-                <KeyRound className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                <p className="text-muted-foreground mb-6">
-                  No active permissions yet
-                </p>
-                <Button onClick={() => setModalOpen(true)} disabled={!hasSigner}>
-                  <Plus size={18} />
-                  Grant Your First Access
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {permissions.map((perm) => {
-                  const isExpired = Number(perm.expiresAt) * 1000 < Date.now();
-                  return (
-                    <div
-                      key={perm.permissionHash}
-                      className="flex items-center justify-between py-4 border-b border-border/40 last:border-0"
-                    >
-                      <div>
-                        <p className="font-mono text-sm">
-                          {perm.protocol.slice(0, 6)}...
-                          {perm.protocol.slice(-4)}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Expires:{" "}
-                          {new Date(
-                            Number(perm.expiresAt) * 1000
-                          ).toLocaleDateString()}
-                          {" · "}
-                          {Number(perm.usedRequests)}/{Number(perm.maxRequests)}{" "}
-                          used
-                        </p>
-                      </div>
-                      {perm.isActive && !isExpired && (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleRevoke(perm.protocol)}
-                          disabled={!hasSigner}
-                        >
-                          <Trash2 size={14} />
-                          Revoke
-                        </Button>
-                      )}
-                      {isExpired && (
-                        <span className="text-xs text-muted-foreground">
-                          Expired
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        {/* Stats Chart */}
+        {permissions.length > 0 && (
+          <div className="mb-8">
+            <PermissionsChart
+              activeCount={stats.active}
+              expiredCount={stats.expired}
+              revokedCount={stats.revoked}
+            />
+          </div>
+        )}
+
+        {/* Filters */}
+        {permissions.length > 0 && (
+          <PermissionFilters
+            onSearchChange={setSearch}
+            onStatusChange={setStatusFilter}
+            activeStatus={statusFilter}
+            className="mb-6"
+          />
+        )}
+
+        {/* Permissions List */}
+        {isLoading ? (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="glass-card h-64 animate-pulse" />
+            ))}
+          </div>
+        ) : permissions.length === 0 ? (
+          <NoPermissions />
+        ) : filteredPermissions.length === 0 ? (
+          <NoResults />
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {filteredPermissions.map((perm) => (
+                <PermissionCard
+                  key={perm.permissionHash}
+                  permission={{
+                    id: perm.permissionHash,
+                    protocol: perm.protocol,
+                    grantedAt: Number(perm.grantedAt || 0),
+                    expiresAt: Number(perm.expiresAt),
+                    maxRequests: Number(perm.maxRequests),
+                    usedRequests: Number(perm.usedRequests),
+                    isActive: perm.isActive,
+                    permissionHash: perm.permissionHash,
+                  }}
+                  onRevoke={
+                    perm.isActive && Number(perm.expiresAt) * 1000 > Date.now()
+                      ? () => handleRevoke(perm.protocol)
+                      : undefined
+                  }
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+        )}
       </motion.div>
 
       <GrantAccessModal

@@ -10,3 +10,6 @@ export {
   useSubgraphPermissions,
   useSubgraphProtocolStats,
 } from "./use-subgraph";
+export { useLazyComponent } from "./use-lazy-component";
+export { useDebounce } from "./use-debounce";
+export { useMediaQuery, useIsMobile, useIsDesktop, usePrefersReducedMotion } from "./use-media-query";

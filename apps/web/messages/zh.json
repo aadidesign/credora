@@ -1,0 +1,97 @@
+{
+  "common": {
+    "appName": "Credora",
+    "connectWallet": "连接钱包",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "search": "搜索",
+    "filter": "筛选",
+    "all": "全部",
+    "active": "活跃",
+    "expired": "已过期",
+    "revoked": "已撤销"
+  },
+  "nav": {
+    "home": "首页",
+    "dashboard": "仪表盘",
+    "score": "分数",
+    "permissions": "权限"
+  },
+  "landing": {
+    "hero": {
+      "title": "Web3 去中心化信用评分",
+      "subtitle": "通过灵魂绑定代币构建您的链上声誉，实现无信任、隐私保护的信用评分。",
+      "cta": "启动应用",
+      "learnMore": "了解更多"
+    },
+    "features": {
+      "title": "为什么选择 Credora？",
+      "soulbound": {
+        "title": "灵魂绑定身份",
+        "description": "不可转让的代币代表您独特的信用历史。"
+      },
+      "privacy": {
+        "title": "隐私保护",
+        "description": "通过细粒度权限控制谁可以访问您的分数。"
+      },
+      "composable": {
+        "title": "可组合性",
+        "description": "通过我们的 SDK 与任何 DeFi 协议集成。"
+      },
+      "onChain": {
+        "title": "链上验证",
+        "description": "完全可验证和透明的区块链评分。"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "仪表盘",
+    "welcome": "欢迎回来",
+    "yourScore": "您的信用评分",
+    "scoreHistory": "评分历史",
+    "recentActivity": "最近活动",
+    "quickActions": "快速操作",
+    "noScore": "暂无评分",
+    "mintSbt": "铸造您的 SBT 开始使用"
+  },
+  "score": {
+    "title": "信用评分",
+    "currentScore": "当前评分",
+    "tier": "等级",
+    "lastUpdated": "最后更新",
+    "updateCount": "更新次数",
+    "factors": "评分因素",
+    "mintSbt": "铸造 SBT",
+    "requestUpdate": "请求更新"
+  },
+  "permissions": {
+    "title": "权限",
+    "subtitle": "管理协议对您信用评分的访问",
+    "grantAccess": "授予访问",
+    "revokeAccess": "撤销访问",
+    "protocol": "协议",
+    "grantedAt": "授予时间",
+    "expiresAt": "过期时间",
+    "usage": "使用情况",
+    "noPermissions": "尚未授予任何权限"
+  },
+  "tiers": {
+    "newcomer": "新手",
+    "established": "成熟",
+    "trusted": "可信",
+    "prime": "优质"
+  },
+  "errors": {
+    "walletNotConnected": "请连接您的钱包",
+    "transactionFailed": "交易失败",
+    "networkError": "网络错误",
+    "insufficientFunds": "余额不足"
+  }
+}

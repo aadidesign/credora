@@ -5,9 +5,10 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Menu, X } from "lucide-react";
 import { useAccount } from "wagmi";
 import { NetworkSwitcher } from "@/components/web3/network-switcher";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -29,7 +30,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
+        <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation" data-tour="navigation">
           <ul className="flex list-none m-0 p-0 gap-6 [&>li]:m-0" style={{ gap: "1.5rem" }}>
             {navLinks.map((link) => (
               <li key={link.href}>
@@ -44,20 +45,26 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <LanguageSwitcher className="hidden sm:block" />
+          <div data-tour="theme-toggle">
+            <ThemeToggle className="hidden sm:flex" />
+          </div>
           {isConnected && (
             <div className="hidden md:block">
               <NetworkSwitcher />
             </div>
           )}
-          <ConnectButton
-            showBalance={false}
-            chainStatus="icon"
-            accountStatus={{
-              smallScreen: "avatar",
-              largeScreen: "full",
-            }}
-          />
+          <div data-tour="connect-wallet">
+            <ConnectButton
+              showBalance={false}
+              chainStatus="icon"
+              accountStatus={{
+                smallScreen: "avatar",
+                largeScreen: "full",
+              }}
+            />
+          </div>
           <Button
             variant="ghost"
             size="icon"

@@ -82,11 +82,17 @@
   .glass {
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
   }
+  .light .glass {
+    @apply bg-black/5 border-black/10;
+  }
   .glass-dark {
     @apply bg-black/20 backdrop-blur-xl border border-white/5;
   }
   .glass-card {
     @apply bg-white/[0.02] backdrop-blur-xl border border-white/[0.08] hover:border-credora-cyan/20 transition-colors;
+  }
+  .light .glass-card {
+    @apply bg-black/[0.02] border-black/[0.08];
   }
   .gradient-text {
     @apply bg-gradient-to-r from-credora-cyan via-credora-green to-credora-cyan bg-clip-text text-transparent;
@@ -101,6 +107,10 @@
   background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 64px 64px;
+}
+.light .bg-grid-pattern {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
 }
 
 /* Glow effects */

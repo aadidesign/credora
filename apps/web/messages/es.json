@@ -1,0 +1,97 @@
+{
+  "common": {
+    "appName": "Credora",
+    "connectWallet": "Conectar Billetera",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "all": "Todos",
+    "active": "Activo",
+    "expired": "Expirado",
+    "revoked": "Revocado"
+  },
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "score": "Puntuación",
+    "permissions": "Permisos"
+  },
+  "landing": {
+    "hero": {
+      "title": "Puntuación Crediticia Descentralizada para Web3",
+      "subtitle": "Construye tu reputación en cadena con puntuaciones crediticias confiables y privadas respaldadas por Tokens Soulbound.",
+      "cta": "Iniciar App",
+      "learnMore": "Saber Más"
+    },
+    "features": {
+      "title": "¿Por qué Credora?",
+      "soulbound": {
+        "title": "Identidad Soulbound",
+        "description": "Tokens no transferibles que representan tu historial crediticio único."
+      },
+      "privacy": {
+        "title": "Preservación de Privacidad",
+        "description": "Controla quién puede acceder a tu puntuación con permisos granulares."
+      },
+      "composable": {
+        "title": "Composable",
+        "description": "Integra con cualquier protocolo DeFi a través de nuestro SDK."
+      },
+      "onChain": {
+        "title": "En Cadena",
+        "description": "Puntuación completamente verificable y transparente en la blockchain."
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcome": "Bienvenido de nuevo",
+    "yourScore": "Tu Puntuación Crediticia",
+    "scoreHistory": "Historial de Puntuación",
+    "recentActivity": "Actividad Reciente",
+    "quickActions": "Acciones Rápidas",
+    "noScore": "Sin puntuación aún",
+    "mintSbt": "Acuña tu SBT para comenzar"
+  },
+  "score": {
+    "title": "Puntuación Crediticia",
+    "currentScore": "Puntuación Actual",
+    "tier": "Nivel",
+    "lastUpdated": "Última Actualización",
+    "updateCount": "Cantidad de Actualizaciones",
+    "factors": "Factores de Puntuación",
+    "mintSbt": "Acuñar SBT",
+    "requestUpdate": "Solicitar Actualización"
+  },
+  "permissions": {
+    "title": "Permisos",
+    "subtitle": "Gestiona el acceso de protocolos a tu puntuación crediticia",
+    "grantAccess": "Otorgar Acceso",
+    "revokeAccess": "Revocar Acceso",
+    "protocol": "Protocolo",
+    "grantedAt": "Otorgado",
+    "expiresAt": "Expira",
+    "usage": "Uso",
+    "noPermissions": "No se han otorgado permisos aún"
+  },
+  "tiers": {
+    "newcomer": "Nuevo",
+    "established": "Establecido",
+    "trusted": "Confiable",
+    "prime": "Prime"
+  },
+  "errors": {
+    "walletNotConnected": "Por favor conecta tu billetera",
+    "transactionFailed": "Transacción fallida",
+    "networkError": "Error de red",
+    "insufficientFunds": "Fondos insuficientes"
+  }
+}

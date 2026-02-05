@@ -1,0 +1,97 @@
+{
+  "common": {
+    "appName": "Credora",
+    "connectWallet": "Connect Wallet",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "active": "Active",
+    "expired": "Expired",
+    "revoked": "Revoked"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "score": "Score",
+    "permissions": "Permissions"
+  },
+  "landing": {
+    "hero": {
+      "title": "Decentralized Credit Scoring for Web3",
+      "subtitle": "Build your on-chain reputation with trustless, privacy-preserving credit scores backed by Soulbound Tokens.",
+      "cta": "Launch App",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "title": "Why Credora?",
+      "soulbound": {
+        "title": "Soulbound Identity",
+        "description": "Non-transferable tokens that represent your unique credit history."
+      },
+      "privacy": {
+        "title": "Privacy-Preserving",
+        "description": "Control who can access your score with granular permissions."
+      },
+      "composable": {
+        "title": "Composable",
+        "description": "Integrate with any DeFi protocol through our SDK."
+      },
+      "onChain": {
+        "title": "On-Chain",
+        "description": "Fully verifiable and transparent scoring on the blockchain."
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back",
+    "yourScore": "Your Credit Score",
+    "scoreHistory": "Score History",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "noScore": "No score yet",
+    "mintSbt": "Mint your SBT to get started"
+  },
+  "score": {
+    "title": "Credit Score",
+    "currentScore": "Current Score",
+    "tier": "Tier",
+    "lastUpdated": "Last Updated",
+    "updateCount": "Update Count",
+    "factors": "Scoring Factors",
+    "mintSbt": "Mint SBT",
+    "requestUpdate": "Request Update"
+  },
+  "permissions": {
+    "title": "Permissions",
+    "subtitle": "Manage protocol access to your credit score",
+    "grantAccess": "Grant Access",
+    "revokeAccess": "Revoke Access",
+    "protocol": "Protocol",
+    "grantedAt": "Granted",
+    "expiresAt": "Expires",
+    "usage": "Usage",
+    "noPermissions": "No permissions granted yet"
+  },
+  "tiers": {
+    "newcomer": "Newcomer",
+    "established": "Established",
+    "trusted": "Trusted",
+    "prime": "Prime"
+  },
+  "errors": {
+    "walletNotConnected": "Please connect your wallet",
+    "transactionFailed": "Transaction failed",
+    "networkError": "Network error",
+    "insufficientFunds": "Insufficient funds"
+  }
+}

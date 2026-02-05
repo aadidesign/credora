@@ -1,8 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Web3Provider } from "@/components/providers/web3-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { Toaster } from "@/components/ui/toaster";
+import { SkipLink } from "@/components/a11y/skip-link";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -45,10 +48,6 @@ export const metadata: Metadata = {
     icon: "/icon",
     apple: "/apple-icon",
   },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#0f0f23" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f0f23" },
-  ],
   manifest: "/manifest.json",
 };
 
@@ -56,6 +55,10 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f0f23" },
+  ],
 };
 
 export default function RootLayout({
@@ -64,16 +67,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans min-h-screen flex flex-col`}
         suppressHydrationWarning
       >
-        <Web3Provider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </Web3Provider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SkipLink />
+          <Web3Provider>
+            <Header />
+            <main id="main-content" className="flex-1" tabIndex={-1}>
+              {children}
+            </main>
+            <Footer />
+            <Toaster />
+          </Web3Provider>
+        </ThemeProvider>
       </body>
     </html>
   );

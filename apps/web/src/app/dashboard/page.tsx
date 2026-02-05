@@ -3,16 +3,24 @@
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, toast, CopyableAddress, NoWalletConnected } from "@/components/ui";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCredora } from "@/hooks/use-credora";
 import { ScoreGauge } from "@/components/dashboard/score-gauge";
 import { TierBadge } from "@/components/dashboard/tier-badge";
 import { ActionCard } from "@/components/dashboard/action-card";
 import { useSubgraphScoreUpdates } from "@/hooks/use-subgraph";
-import { BadgeDollarSign, KeyRound, ArrowRight, ExternalLink, Wallet } from "lucide-react";
+import { RelativeTime } from "@/components/ui/relative-time";
+import { BadgeDollarSign, KeyRound, ArrowRight, ExternalLink } from "lucide-react";
+
+// Lazy load chart for performance
+const ScoreHistoryChart = dynamic(
+  () => import("@/components/charts/score-history-chart").then((m) => m.ScoreHistoryChart),
+  { ssr: false, loading: () => <div className="h-[280px] animate-pulse bg-muted/20 rounded-lg" /> }
+);
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -33,30 +41,33 @@ export default function DashboardPage() {
   const handleMintSBT = async () => {
     if (!hasSigner) return;
     try {
+      toast.loading("Minting your SBT...");
       const result = await client.mintSBT();
       if (result.success) {
+        toast.success("SBT minted successfully!");
         refetch();
+      } else {
+        toast.error("Failed to mint SBT");
       }
     } catch (err) {
       console.error("Mint failed:", err);
+      toast.error("Transaction failed");
     }
   };
+
+  // Transform score updates for chart
+  const chartData = scoreUpdates.map((u: { timestamp: string; newScore: string }) => ({
+    timestamp: parseInt(u.timestamp),
+    score: parseInt(u.newScore),
+  }));
 
   if (!isConnected) {
     return (
       <div className="container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-md mx-auto text-center"
-        >
-          <Wallet className="w-16 h-16 text-muted-foreground mx-auto mb-6 opacity-50" />
-          <h1 className="text-2xl font-bold mb-2">Dashboard</h1>
-          <p className="text-muted-foreground mb-8">
-            Connect your wallet to view your credit score and manage permissions.
-          </p>
+        <NoWalletConnected />
+        <div className="flex justify-center mt-6">
           <ConnectButton />
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -69,13 +80,9 @@ export default function DashboardPage() {
         transition={{ duration: 0.5 }}
       >
         <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-        <p className="text-muted-foreground mb-8">
-          {address && (
-            <span className="font-mono text-sm">
-              {address.slice(0, 6)}...{address.slice(-4)}
-            </span>
-          )}
-        </p>
+        <div className="mb-8">
+          {address && <CopyableAddress address={address} />}
+        </div>
 
         {isLoading && !score ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -114,12 +121,9 @@ export default function DashboardPage() {
                   <div className="flex-1 space-y-2">
                     {hasSBT && score && (
                       <>
-                        <p className="text-muted-foreground">
-                          Last updated:{" "}
-                          {new Date(
-                            Number(score.lastUpdated) * 1000
-                          ).toLocaleDateString()}
-                        </p>
+                        <div className="text-muted-foreground">
+                          Last updated: <RelativeTime timestamp={Number(score.lastUpdated)} />
+                        </div>
                         <p className="text-sm text-muted-foreground">
                           Updates: {Number(score.updateCount)}
                         </p>
@@ -206,13 +210,25 @@ export default function DashboardPage() {
           </motion.div>
         )}
 
+        {/* Score History Chart */}
+        {chartData.length > 0 && (
+          <motion.div
+            className="mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <ScoreHistoryChart data={chartData} title="Score History" />
+          </motion.div>
+        )}
+
         {/* Recent Activity */}
         {scoreUpdates.length > 0 && (
           <motion.div
             className="mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
             <Card className="glass-card">
               <CardHeader>
@@ -231,9 +247,7 @@ export default function DashboardPage() {
                       <span className="text-sm">
                         {update.oldScore} → {update.newScore}
                       </span>
-                      <span className="text-sm text-muted-foreground">
-                        {new Date(parseInt(update.timestamp) * 1000).toLocaleDateString()}
-                      </span>
+                      <RelativeTime timestamp={parseInt(update.timestamp)} className="text-sm" />
                     </div>
                   ))}
                 </div>

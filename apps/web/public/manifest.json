@@ -1,21 +1,42 @@
 {
-  "name": "Credora",
+  "name": "Credora - Decentralized Credit Scoring",
   "short_name": "Credora",
-  "description": "Decentralized Credit Scoring for Web3",
-  "start_url": "/",
+  "description": "Trustless, on-chain credit scoring using Soulbound Tokens for Web3",
+  "start_url": "/dashboard",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#0f0f23",
-  "theme_color": "#0f0f23",
+  "theme_color": "#00d4aa",
+  "categories": ["finance", "productivity"],
   "icons": [
     {
       "src": "/icon",
       "sizes": "32x32",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/apple-icon",
       "sizes": "180x180",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your credit score dashboard",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icon", "sizes": "32x32" }]
+    },
+    {
+      "name": "Permissions",
+      "short_name": "Perms",
+      "description": "Manage protocol permissions",
+      "url": "/permissions",
+      "icons": [{ "src": "/icon", "sizes": "32x32" }]
     }
   ]
 }
